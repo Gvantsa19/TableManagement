@@ -1,0 +1,15 @@
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\bin\Debug\net8.0\TMS.APP.deps.json
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\bin\Debug\net8.0\TMS.APP.dll
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\bin\Debug\net8.0\TMS.APP.pdb
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\bin\Debug\net8.0\TMS.Infrastructure.dll
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\bin\Debug\net8.0\TMS.Infrastructure.pdb
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\obj\Debug\net8.0\TMS.APP.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\obj\Debug\net8.0\TMS.APP.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\obj\Debug\net8.0\TMS.APP.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\obj\Debug\net8.0\TMS.APP.AssemblyInfo.cs
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\obj\Debug\net8.0\TMS.APP.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\obj\Debug\net8.0\TMS.APP.csproj.Up2Date
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\obj\Debug\net8.0\TMS.APP.dll
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\obj\Debug\net8.0\refint\TMS.APP.dll
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\obj\Debug\net8.0\TMS.APP.pdb
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.APP\obj\Debug\net8.0\ref\TMS.APP.dll

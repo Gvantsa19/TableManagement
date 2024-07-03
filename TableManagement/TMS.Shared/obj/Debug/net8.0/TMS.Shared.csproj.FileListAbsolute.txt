@@ -1,0 +1,11 @@
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Shared\bin\Debug\net8.0\TMS.Shared.deps.json
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Shared\bin\Debug\net8.0\TMS.Shared.dll
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Shared\bin\Debug\net8.0\TMS.Shared.pdb
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Shared\obj\Debug\net8.0\TMS.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Shared\obj\Debug\net8.0\TMS.Shared.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Shared\obj\Debug\net8.0\TMS.Shared.AssemblyInfo.cs
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Shared\obj\Debug\net8.0\TMS.Shared.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Shared\obj\Debug\net8.0\TMS.Shared.dll
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Shared\obj\Debug\net8.0\refint\TMS.Shared.dll
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Shared\obj\Debug\net8.0\TMS.Shared.pdb
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Shared\obj\Debug\net8.0\ref\TMS.Shared.dll

@@ -1,0 +1,14 @@
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\bin\Debug\net8.0\TMS.Infrastructure.deps.json
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\bin\Debug\net8.0\TMS.Infrastructure.dll
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\bin\Debug\net8.0\TMS.Infrastructure.pdb
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\obj\Debug\net8.0\TMS.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\obj\Debug\net8.0\TMS.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\obj\Debug\net8.0\TMS.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\obj\Debug\net8.0\TMS.Infrastructure.AssemblyInfo.cs
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\obj\Debug\net8.0\TMS.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\obj\Debug\net8.0\TMS.Infrastructure.dll
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\obj\Debug\net8.0\refint\TMS.Infrastructure.dll
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\obj\Debug\net8.0\TMS.Infrastructure.pdb
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\obj\Debug\net8.0\ref\TMS.Infrastructure.dll
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\bin\Debug\net8.0\TMS.Infrastructure.runtimeconfig.json
+C:\Users\user\Desktop\New folder\TableManagement\table-management\TableManagement\TMS.Infrastructure\obj\Debug\net8.0\TMS.Infrastructure.genruntimeconfig.cache

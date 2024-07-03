@@ -1,0 +1,36 @@
+version: '3.4'
+
+services:
+  tms.api:
+    image: ${DOCKER_REGISTRY-}tmsapi
+    container_name: tms.api
+    build:
+      context: .
+      dockerfile: TMS.API/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ConnectionStrings__Connection=Host=tms.database;Port=5432;Database=TableManagement;Username=postgres;Password=admin;Pooling=true;
+    networks:
+      - backend
+ 
+  tms.database:
+    image: postgres:latest
+    container_name: tms.database
+    environment:
+      - POSTGRES_DB=TableManagement
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+    volumes:
+      - ./.containers/TableManagement:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - backend
+
+volumes:
+  tms.database:
+
+networks:
+  backend:
