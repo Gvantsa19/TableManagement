@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using System.Linq;
 using System.Text;
-using TMS.Infrastructure.Configuration;
 using TMS.Infrastructure.Entities;
 using TMS.Infrastructure.Persistence;
 
@@ -50,66 +47,16 @@ namespace TMS.Infrastructure.Repository
         }
         public async Task<DynamicTableDto> GetTableDataWithColumnsAsync(string tableName, int pageNumber, int pageSize)
         {
-            var connectionString = _configuration.GetConnectionString("Connection");
-
             var table = new DynamicTableDto();
 
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
+            var columnNames = await GetColumnNames(tableName);
 
-                // Fetch the column names
-                var columnNames = new List<string>();
-                var columnQuery = $"SELECT * FROM \"{tableName}\" LIMIT 1;";
-                using (var columnCommand = new NpgsqlCommand(columnQuery, connection))
-                {
-                    using (var reader = await columnCommand.ExecuteReaderAsync())
-                    {
-                        for (int i = 0; i < reader.FieldCount; i++)
-                        {
-                            columnNames.Add(reader.GetName(i));
-                        }
-                    }
-                }
+            table.TableName = tableName;
+            table.Columns = columnNames.Select(cn => new ColumnInfo { ColumnName = cn }).ToList();
+            table.Items = await GetTableItems(tableName, pageNumber, pageSize);
 
-                table = new DynamicTableDto
-                {
-                    TableName = tableName,
-                    Columns = columnNames.Select(cn => new ColumnInfo { ColumnName = cn }).ToList(),
-                    Items = new List<Dictionary<string, object>>(),
-                    PageNumber = pageNumber,
-                    PageSize = pageSize
-                };
-
-                // Calculate the offset for pagination
-                int offset = (pageNumber - 1) * pageSize;
-
-                // Query to get the paginated data
-                var itemQuery = $"SELECT * FROM \"{tableName}\" LIMIT @PageSize OFFSET @Offset;";
-                using (var itemCommand = new NpgsqlCommand(itemQuery, connection))
-                {
-                    itemCommand.Parameters.AddWithValue("@PageSize", pageSize);
-                    itemCommand.Parameters.AddWithValue("@Offset", offset);
-
-                    using (var reader = await itemCommand.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            var rowData = new Dictionary<string, object>();
-
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                var columnName = reader.GetName(i);
-                                var columnValue = reader.GetValue(i);
-
-                                rowData.Add(columnName, columnValue);
-                            }
-
-                            table.Items.Add(rowData);
-                        }
-                    }
-                }
-            }
+            table.PageNumber = pageNumber;
+            table.PageSize = pageSize;
 
             return table;
         }
@@ -218,8 +165,64 @@ namespace TMS.Infrastructure.Repository
                 }
             }
         }
+        private async Task<List<string>> GetColumnNames(string tableName)
+        {
+            var query = $"SELECT * FROM \"{tableName}\" LIMIT 1;";
 
+            var columnNames = new List<string>();
+
+            using (var command = _dbContext.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = query;
+                await _dbContext.Database.OpenConnectionAsync();
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        columnNames.Add(reader.GetName(i));
+                    }
+                }
+            }
+
+            return columnNames;
+        }
+        private async Task<List<Dictionary<string, object>>> GetTableItems(string tableName, int pageNumber, int pageSize)
+        {
+            int offset = (pageNumber - 1) * pageSize;
+
+            var query = $"SELECT * FROM \"{tableName}\" LIMIT {pageSize} OFFSET {offset};";
+
+            var tableItems = new List<Dictionary<string, object>>();
+
+            using (var command = _dbContext.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = query;
+                await _dbContext.Database.OpenConnectionAsync();
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        var rowData = new Dictionary<string, object>();
+
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            var columnName = reader.GetName(i);
+                            var columnValue = reader.GetValue(i);
+
+                            rowData.Add(columnName, columnValue);
+                        }
+
+                        tableItems.Add(rowData);
+                    }
+                }
+            }
+
+            return tableItems;
+        }
     }
+
 
     public class DynamicTableDto
     {
