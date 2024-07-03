@@ -1,0 +1,94 @@
+<div class="formstyle">
+  <div class="container1">
+    <form
+      class="has-alternate-background"
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="page-center">
+        <div class="container columns">
+          <div class="column">
+            <div class="box login-box px-6 py-6">
+              <div class="level">
+                <div class="level-item">
+                  <h3
+                    style="text-align: center"
+                    class="login-title has-text-white"
+                  >
+                    Log in to your account
+                  </h3>
+                </div>
+              </div>
+              <div class="level">
+                <div class="level-item">
+                  <p class="login-subtitle is-center has-text-white">
+                    Welcome back! Please enter your credentials.
+                  </p>
+                </div>
+              </div>
+              <div class="level">
+                <div class="level-item">
+                  <div class="field">
+                    <label class="label" for="email">Email</label>
+                    <p class="control has-icons-left has-icons-right">
+                      <input
+                        class="input inputstyle is-secondary is-outlined"
+                        id="email"
+                        placeholder="Email"
+                        type="email"
+                        formControlName="email"
+                      />
+                      <span class="icon has-text-white is-small is-left">
+                        <i class="fas fa-envelope"></i>
+                      </span>
+                      <span class="icon has-text-white is-small is-right">
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="level">
+                <div class="level-item">
+                  <div class="field mb-3">
+                    <label class="label" for="password">Password</label>
+                    <p class="control has-icons-left">
+                      <input
+                        class="input inputstyle is-secondary is-outlined"
+                        id="password"
+                        formControlName="password"
+                        placeholder="Password"
+                        type="password"
+                      />
+                      <span class="icon is-login-icon is-small is-left">
+                        <i class="fas fa-lock"></i>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="level">
+                <div class="level-item">
+                  <div class="field">
+                    <button
+                      (click)="onSubmit()"
+                      class="button button-43 is-secondary-70"
+                    >
+                      Login
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="level">
+                <div class="level-item">
+                  <button type="button" class="link" (click)="redirectToRegister()">Don't Have account?</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

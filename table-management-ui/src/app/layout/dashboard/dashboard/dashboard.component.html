@@ -1,0 +1,87 @@
+<div style="display: flex; justify-content: space-between">
+  <div>
+    <div class="sidebar-opener" (click)="sidebarShow = !sidebarShow"></div>
+
+    <div class="sidebar-slider" [class.sidebar-slide-in]="sidebarShow">
+      <div class="sidebar-close" (click)="sidebarShow = !sidebarShow">X</div>
+      <div class="sidebar-content">
+        <div style="font-size: 28px">Tables</div>
+        <ul class="list">
+          <li
+            class="listli"
+            *ngFor="let table of filteredTableNames"
+            (click)="fetchTableData(table)"
+          >
+            {{ table }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="newtable">
+    <button class="newtablebtn button-68" (click)="openCreateTable()">
+      add new table
+    </button>
+  </div>
+
+  <div class="dropdown-content">
+    <a class="dropdown-item" (click)="logout()">
+      <div class="signout"></div>
+      Log out
+    </a>
+  </div>
+</div>
+
+<div class="filter-controls">
+  <input
+    class="filter"
+    id="filter"
+    type="text"
+    (input)="applyFilter($event)"
+    placeholder="Type to filter..."
+  />
+</div>
+
+<div style="display: flex; justify-content: center; margin-top: 20px">
+  <span style="font-size: 30px">Please select table</span>
+</div>
+
+<div class="table-wrapper">
+  <table class="fl-table">
+    <thead>
+      <tr>
+        <th *ngFor="let column of tableData.columns">
+          {{ column.columnName }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of tableData.items">
+        <td *ngFor="let column of tableData.columns">
+          {{ item[column.columnName] }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="pagination-controls">
+  <button
+    class="button-33"
+    (click)="previousPage()"
+    [disabled]="PageNumber <= 1"
+  >
+    Previous
+  </button>
+  <span style="margin-right: 10px; margin-left: 10px"
+    >Page {{ PageNumber }}</span
+  >
+  <button
+    class="button-33"
+    (click)="nextPage()"
+    [disabled]="tableData.items?.length < pageSize"
+  >
+    Next
+  </button>
+</div>

@@ -1,0 +1,30 @@
+// Custom Theming for Angular Material
+@use '@angular/material' as mat;
+@include mat.core();
+
+// FontAwesome
+
+// Define your custom theme
+$table-management-ui-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$azure-palette,
+    tertiary: mat.$blue-palette,
+  ),
+  density: (
+    scale: 0,
+  )
+));
+
+// Include theme styles for core and each component used in your app
+:root {
+  @include mat.all-component-themes($table-management-ui-theme);
+}
+
+// Global styles
+html, body {
+  height: 100%;
+  margin: 0;
+  background:rgb(228, 229, 247);;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

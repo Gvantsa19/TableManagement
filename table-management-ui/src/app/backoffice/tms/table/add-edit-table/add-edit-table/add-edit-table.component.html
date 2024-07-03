@@ -1,0 +1,105 @@
+<div><h1 style="text-align: center">Create Table</h1></div>
+<div class="modal" body>
+  <form [formGroup]="tableForm" (ngSubmit)="onSubmit()">
+    <label for="tableName">Table Name:</label>
+    <div>
+      <input
+        class="inputstyle"
+        type="text"
+        id="tableName"
+        formControlName="tableName"
+        required
+      />
+    </div>
+
+    <div formArrayName="columns">
+      <div
+        style="display: flex"
+        *ngFor="let column of columnsArray.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <div style="margin-right: 60px">
+          <label for="columnName">Column Name:</label>
+          <div>
+            <input
+              class="inputstyle"
+              type="text"
+              id="columnName"
+              formControlName="columnName"
+              required
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="columnDataType">Data Type:</label>
+          <div>
+            <select
+              class="inputstyle"
+              id="columnDataType"
+              formControlName="dataType"
+              required
+            >
+              <option value="">Select Data Type</option>
+              <option value="bigint">BIGINT</option>
+              <option value="boolean">BOOLEAN</option>
+              <option value="char">CHAR</option>
+              <option value="date">DATE</option>
+              <option value="decimal">DECIMAL</option>
+              <option value="double precision">DOUBLE PRECISION</option>
+              <option value="integer">INTEGER</option>
+              <option value="numeric">NUMERIC</option>
+              <option value="real">REAL</option>
+              <option value="smallint">SMALLINT</option>
+              <option value="text">TEXT</option>
+              <option value="timestamp">TIMESTAMP</option>
+              <option value="uuid">UUID</option>
+              <option value="varchar">VARCHAR</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-left: 20px">
+          <label for="defaultValue">Default Value:</label>
+          <div>
+            <input
+              class="inputstyle"
+              type="text"
+              id="defaultValue"
+              formControlName="defaultValue"
+              required
+            />
+          </div>
+        </div>
+
+        <div style="margin-left: 50px">
+          <label> Nullable </label>
+          <div>
+            <input type="checkbox" formControlName="isNullable" />
+          </div>
+        </div>
+
+        <div style="margin-left: 50px">
+          <label> IsPrimaryKey </label>
+          <div>
+            <input type="checkbox" formControlName="isPrimaryKey" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="button-33" type="button" (click)="addColumn()">
+      Add Column
+    </button>
+
+    <button class="createbtn" type="submit" [disabled]="tableForm.invalid">
+      Create Table
+    </button>
+  </form>
+</div>
+
+<div style="display: flex; justify-content: center; margin-bottom: 100px">
+  <button mat-dialog-close class="btn button-9 button is-white is-outlined">
+    Cancel
+  </button>
+</div>
