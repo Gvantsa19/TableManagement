@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TMS.Infrastructure.Repository;
 
@@ -6,7 +7,7 @@ namespace TMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class TableController : ControllerBase
     {
         private readonly IMediator _mediator;

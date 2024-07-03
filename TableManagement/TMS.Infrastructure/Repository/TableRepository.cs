@@ -23,29 +23,25 @@ namespace TMS.Infrastructure.Repository
 
         public async Task<List<string>> GetAllTablesAsync()
         {
-            List<string> tables = new List<string>();
+            var query = @"
+                SELECT table_name
+                FROM information_schema.tables
+                WHERE table_schema = 'public'
+                AND table_type = 'BASE TABLE';";
 
-            var connectionString = _configuration.GetConnectionString("Connection");
+            var tables = new List<string>();
 
-            using (var connection = new NpgsqlConnection(connectionString))
+            using (var command = _dbContext.Database.GetDbConnection().CreateCommand())
             {
-                await connection.OpenAsync();
+                command.CommandText = query;
 
-                // Query to get all table names
-                var query = @"
-            SELECT table_name
-            FROM information_schema.tables
-            WHERE table_schema = 'public' -- Adjust schema as needed
-            AND table_type = 'BASE TABLE';";
+                await _dbContext.Database.OpenConnectionAsync();
 
-                using (var command = new NpgsqlCommand(query, connection))
+                using (var reader = await command.ExecuteReaderAsync())
                 {
-                    using (var reader = await command.ExecuteReaderAsync())
+                    while (await reader.ReadAsync())
                     {
-                        while (await reader.ReadAsync())
-                        {
-                            tables.Add(reader.GetString(0));
-                        }
+                        tables.Add(reader.GetString(0));
                     }
                 }
             }
