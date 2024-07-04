@@ -158,13 +158,26 @@ namespace TMS.Infrastructure.Repository
 
                     for (int i = 0; i < values.Count; i++)
                     {
-                        command.Parameters.AddWithValue($"@param{i}", values[i]);
+                        // Check if value is null
+                        object paramValue = values[i];
+                        if (paramValue == null)
+                        {
+                            command.Parameters.AddWithValue($"@param{i}", DBNull.Value);
+                        }
+                        else
+                        {
+                            NpgsqlParameter parameter = new NpgsqlParameter($"@param{i}", paramValue);
+      
+                            command.Parameters.Add(parameter);
+                        }
                     }
 
                     await command.ExecuteNonQueryAsync();
                 }
             }
         }
+
+
         private async Task<List<string>> GetColumnNames(string tableName)
         {
             var query = $"SELECT * FROM \"{tableName}\" LIMIT 1;";

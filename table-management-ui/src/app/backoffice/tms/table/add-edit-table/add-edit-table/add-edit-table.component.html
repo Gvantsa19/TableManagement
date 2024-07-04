@@ -55,6 +55,7 @@
               <option value="timestamp">TIMESTAMP</option>
               <option value="uuid">UUID</option>
               <option value="varchar">VARCHAR</option>
+              <option value="serial">SERIAL</option>
             </select>
           </div>
         </div>
@@ -92,9 +93,7 @@
       Add Column
     </button>
 
-    <button class="createbtn" type="submit" [disabled]="tableForm.invalid">
-      Create Table
-    </button>
+    <button class="createbtn" type="submit">Create Table</button>
   </form>
 </div>
 

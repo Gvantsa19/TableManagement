@@ -28,7 +28,7 @@ export class AddEditTableComponent implements OnInit {
   updateForm!: FormGroup;
   tableCreated: boolean = false;
   tableData: any = { tableName: '', columns: [] };
-
+  containersArray!: FormArray;
   get columnsArray() {
     return this.tableForm.get('columns') as FormArray;
   }
@@ -52,89 +52,123 @@ export class AddEditTableComponent implements OnInit {
     });
   }
 
-  fetchTableData(table): void {
-    // this.tableService.getById(table).subscribe((data) => {
-    //   this.tableData = data;
-    //   console.log(this.tableData.columns);
-    //   this.tableData.columns.forEach((column: any) => {
-    //     this.updateColumnValues.push(
-    //       this.formBuilder.control('', Validators.required)
-    //     );
-    //   });
-    // });
-  }
-
   get updateColumnValues() {
     return this.updateForm.get('updateColumnValues') as FormArray;
   }
 
+  logValidationErrors(group: FormGroup = this.tableForm): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      const control = group.get(key);
+      if (control instanceof FormGroup) {
+        this.logValidationErrors(control);
+      } else if (control instanceof FormArray) {
+      } else {
+        if (control && control.errors) {
+          console.log(`Control ${key} has errors:`, control.errors);
+        }
+      }
+    });
+  }
+
   onSubmit(): void {
-    if (this.tableForm.valid) {
-      const formData = this.tableForm.value;
-      const tableData = {
-        tableName: formData.tableName,
-        columns: formData.columns.map((column: any) => ({
-          columnName: column.columnName,
-          dataType: column.dataType,
-          defaultValue: column.defaultValue,
-          isNullable: column.isNullable,
-          isPrimaryKey: column.isPrimaryKey,
-          tableId: 0,
-        })),
-      };
+    // if (this.tableForm.invalid) {
+    //   this.logValidationErrors();
+    //   return;
+    // }
 
-      const update = {
-        columnNames: formData.columns.map((column: any) => column.columnName),
-        values: formData.columns.map((column: any) => column.defaultValue),
-      };
-      this.tableService.createTable(tableData).subscribe(
-        (response) => {
-          this.tableCreated = true;
-          this.fetchTableData(this.tableForm.value.tableName);
-
-          setTimeout(() => {
-            this.tableService
-              .updateTable(this.tableForm.value.tableName, update)
-              .subscribe(
-                (updateResponse) => {
-                  console.log('Table updated successfully:', updateResponse);
-                  this.rout.navigate(["./backoffice"])
-                },
-                (updateError) => {
-                  console.error('Error updating table:', updateError);
-                }
-              );
-          }, 5000);
-        },
-        (error) => {
-          console.error('Error creating table:', error);
-        }
-      );
+    const formData = this.tableForm.value;
+    const tableData = {
+      tableName: formData.tableName,
+      columns: formData.columns.map((column: any) => ({
+        columnName: column.columnName,
+        dataType: column.dataType,
+        defaultValue:
+          column.defaultValue === '' || column.dataType === 'serial'
+            ? this.generateRandomValue(column.dataType)
+            : column.defaultValue,
+        isNullable: column.isNullable,
+        isPrimaryKey: column.isPrimaryKey,
+      })),
+    };
+    const update = {
+      columnNames: formData.columns
+        .filter((column: any) => column.columnName.toLowerCase() !== 'id')
+        .map((column: any) => column.columnName),
+        values: formData.columns
+        .filter((column: any) => column.columnName.toLowerCase() !== 'id')
+        .map((column: any) => this.generateRandomValue(column.dataType)),
+    };
+    this.tableService.createTable(tableData).subscribe(
+      (response) => {
+        this.tableCreated = true;
+        setTimeout(() => {
+          this.tableService
+            .updateTable(this.tableForm.value.tableName, update)
+            .subscribe(
+              (updateResponse) => {
+                console.log('Table updated successfully:', updateResponse);
+                this.rout.navigate(['./backoffice']);
+              },
+              (updateError) => {
+                console.error('Error updating table:', updateError);
+              }
+            );
+        }, 5000);
+      },
+      (error) => {
+        console.error('Error creating table:', error);
+      }
+    );
+  }
+  generateRandomValue(dataType: string): any {
+    switch (dataType) {
+      case 'bigint':
+        return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+      case 'boolean':
+        return Math.random() < 0.5;
+      case 'char':
+        return String.fromCharCode(65 + Math.floor(Math.random() * 26));
+      case 'date':
+        return new Date();
+      case 'decimal':
+        return Math.random() * 100;
+      case 'double precision':
+        return Math.random() * Number.MAX_VALUE;
+      case 'integer':
+        return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+      case 'numeric':
+        return Math.random() * 100;
+      case 'real':
+        return Math.random() * Number.MAX_VALUE;
+      case 'smallint':
+        return Math.floor(Math.random() * 32767);
+      case 'text':
+        return 'RandomText';
+      case 'timestamp':
+        return new Date().toISOString();
+      case 'uuid':
+        // Generate a UUID (for example purposes, use an actual UUID generation method)
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+          /[xy]/g,
+          function (c) {
+            var r = (Math.random() * 16) | 0,
+              v = c == 'x' ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+          }
+        );
+      case 'varchar':
+        return 'RandomString';
+      default:
+        return null;
     }
   }
-
-  onUpdate(): void {
-    if (this.updateForm.valid) {
-      const columnNames = this.tableData.columns.map(
-        (column: any) => column.columnName
-      );
-      const columnValues = this.updateForm.value.updateColumnValues;
-      const update = { columnNames, columnValues };
-
-      this.tableService.updateTable(this.tableData.tableName, update).subscribe(
-        (updateResponse) => {
-          console.log('Table updated successfully:', updateResponse);
-          this.updateForm.reset();
-        },
-        (updateError) => {
-          console.error('Error updating table:', updateError);
-        }
-      );
-    }
-  }
-
   addColumn(): void {
     this.columnsArray.push(this.createColumnFormGroup());
+  }
+
+  addContainer(): void {
+    this.containersArray = this.tableForm.get('columns') as FormArray;
+    this.containersArray.push(this.createColumnFormGroup());
   }
 
   private createColumnFormGroup(): FormGroup {
