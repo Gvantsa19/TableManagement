@@ -60,8 +60,12 @@ namespace TMS.Infrastructure.Repository
 
             return table;
         }
-        public async Task CreateTable(CreateTableRequest request)
+        public async Task CreateTable(CreateTableRequest request, int numberOfRows)
         {
+            if (!IsValidTableName(request.TableName))
+            {
+                throw new ArgumentException("Invalid table name.");
+            }
             var connectionString = _configuration.GetConnectionString("Connection");
             using (var connection = new NpgsqlConnection(connectionString))
             {
@@ -111,6 +115,25 @@ namespace TMS.Infrastructure.Repository
                     command.ExecuteNonQuery();
                     Console.WriteLine("Table created successfully.");
                 }
+
+                numberOfRows = 50;
+
+                for (int i = 0; i < numberOfRows; i++)
+                {
+                    var insertQuery = new StringBuilder();
+                    insertQuery.AppendFormat("INSERT INTO \"{0}\" (", tableName);
+                    insertQuery.Append(string.Join(", ", columns.Select(c => $"\"{c.ColumnName}\"")));
+                    insertQuery.Append(") VALUES (");
+                    insertQuery.Append(string.Join(", ", columns.Select(c => FormatValue(GenerateRandomData(c.DataType)))));
+                    insertQuery.Append(");");
+
+                    using (var insertCommand = new NpgsqlCommand(insertQuery.ToString(), connection))
+                    {
+                        insertCommand.ExecuteNonQuery();
+                    }
+                }
+
+                Console.WriteLine($"{numberOfRows} rows inserted successfully.");
             }
         }
         public async Task InsertData(string tableName, List<string> columnNames, List<object> values)
@@ -234,6 +257,63 @@ namespace TMS.Infrastructure.Repository
 
             return tableItems;
         }
+
+        private string FormatValue(object value)
+        {
+            if (value is string)
+            {
+                return $"'{value}'";
+            }
+            if (value is bool)
+            {
+                return (bool)value ? "TRUE" : "FALSE";
+            }
+            if (value is DateTime)
+            {
+                return $"'{((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss")}'";
+            }
+            return value.ToString();
+        }
+        private object GenerateRandomData(string dataType)
+        {
+            var random = new Random();
+            switch (dataType.ToLower())
+            {
+                case "integer":
+                case "int":
+                    return random.Next(1, 1000);
+                case "bigint":
+                    return random.NextInt64(1, long.MaxValue);
+                case "real":
+                case "float":
+                    return (float)random.NextDouble();
+                case "double precision":
+                case "double":
+                    return random.NextDouble();
+                case "boolean":
+                    return random.Next(0, 2) == 0 ? false : true;
+                case "text":
+                case "varchar":
+                case "character varying":
+                    const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                    return new string(Enumerable.Repeat(chars, 10).Select(s => s[random.Next(s.Length)]).ToArray());
+                case "uuid":
+                    return Guid.NewGuid();
+                case "date":
+                    return DateTime.Now.AddDays(random.Next(-365, 365)).ToString("yyyy-MM-dd");
+                case "timestamp":
+                case "timestamp without time zone":
+                    return DateTime.Now.AddMinutes(random.Next(-525600, 525600)).ToString("yyyy-MM-dd HH:mm:ss");
+                default:
+                    throw new ArgumentException($"Unsupported data type: {dataType}");
+            }
+        }
+        private bool IsValidTableName(string tableName)
+        {
+            var regex = new System.Text.RegularExpressions.Regex(@"^[a-zA-Z0-9_]+$");
+            return regex.IsMatch(tableName);
+        }
+
     }
 
 
